@@ -1,23 +1,38 @@
-FROM php:7.0-fpm-alpine
+FROM alpine:3.5
 MAINTAINER Lars Nieuwenhuizen <l.nieuwenhuizen@developers.nl>
 
-RUN docker-php-source extract && \
-  apk add --update --no-cache autoconf g++ make && \
-  pecl install redis && \
-  docker-php-ext-install tokenizer && \
-  docker-php-ext-install pdo && \
-  docker-php-ext-install mysqli && \
-  docker-php-ext-install pdo_mysql && \
-  docker-php-ext-install mbstring && \
-  docker-php-ext-install curl && \
-  docker-php-ext-install dom && \
-  docker-php-ext-install xml && \
-  docker-php-ext-install xdebug && \
-  docker-php-ext-install gd && \
-  docker-php-ext-install session && \
-  docker-php-ext-enable redis && \
-  docker-php-ext-install zip && \
-  docker-php-source delete
+RUN	echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
+    apk update && \
+	apk upgrade && \
+	apk add --no-cache --update \
+		php7-mbstring \
+		php7-pdo \
+		php7-soap \
+		php7-mcrypt \
+		php7-openssl \
+		php7-json \
+		php7-dom \
+		php7-xml \
+		php7-pdo_mysql \
+		php7-gettext \
+		php7-iconv \
+		php7-curl \
+		php7-zip \
+		php7-ctype \
+		php7-session \
+		php7-gd \
+		php7-xdebug \
+		php7-redis \
+		php7-fpm
+
+RUN sed -i "s|;*daemonize\s*=\s*yes|daemonize = no|g" /etc/php7/php-fpm.conf && \
+	sed -i "s|;*listen\s*=\s*/||g" /etc/php7/php-fpm.d/www.conf && \
+	sed -i "s|;*listen\s*=\s*127.0.0.1:9000|listen = 9000|g" /etc/php7/php-fpm.d/www.conf && \
+	sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= 0|i" /etc/php7/php.ini
+
+RUN apk add --no-cache --update graphicsmagick curl ssmtp
+
+RUN ln -s /usr/bin/php7 /usr/bin/php
 
 RUN rm -rf /var/cache/apk/*
 
