@@ -1,7 +1,7 @@
 FROM alpine:3.5
 MAINTAINER Lars Nieuwenhuizen <l.nieuwenhuizen@developers.nl>
 
-RUN	echo "http://dl-cdn.alpinelinux.org/alpine/latest-stable/releases" >> /etc/apk/repositories && \
+RUN	echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
     apk update && \
 	apk upgrade && \
 	apk add --no-cache --update \
