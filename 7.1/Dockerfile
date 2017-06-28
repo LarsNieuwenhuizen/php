@@ -1,10 +1,10 @@
-FROM ubuntu:16.10
+FROM ubuntu:17.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
 RUN apt-get install -y software-properties-common
-RUN add-apt-repository ppa:ondrej/php
+RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get install -y --allow-unauthenticated php7.1-fpm php7.1-cli
 RUN apt-get install -y --allow-unauthenticated \
